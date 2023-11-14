@@ -26,10 +26,9 @@ const SignInPage = () => {
   const mutation = useMutation({
     mutationFn: async (data: SignInRequest) => await signin(data),
     onSuccess: (data) => {
-      console.log("😻 ~ file: page.tsx:29 ~ SignInPage ~ data:", data);
       setToken("accessToken", data.accessToken);
       setToken("refreshToken", data.refreshToken);
-      // router.push("/get-started");
+      router.push("/get-started");
     },
     onError: (error) => {
       signupForm.setFieldError("email", (error as any).response.data.message);
