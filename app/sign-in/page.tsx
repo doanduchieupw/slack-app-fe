@@ -1,24 +1,16 @@
 "use client";
-import {
-  Button,
-  Divider,
-  Flex,
-  Input,
-  Text,
-  TextInput,
-  Title,
-} from "@mantine/core";
+import { Button, Divider, Flex, Text, TextInput, Title } from "@mantine/core";
 import GoogleIcon from "@images/logo/google-logo.svg";
 import AppleIcon from "@images/logo/apple-logo.svg";
 import { useMutation } from "@tanstack/react-query";
-import { signup } from "api/auth";
+import { signin } from "api/auth";
 import { useForm } from "@mantine/form";
-import { SignUpRequest } from "types/auth";
+import { SignInRequest } from "types/auth";
 import { useRouter } from "next/navigation";
 import { setToken } from "@utils/cookies";
 import Link from "next/link";
 
-const CreateNewPage = () => {
+const SignInPage = () => {
   const router = useRouter();
   const signupForm = useForm({
     initialValues: {
@@ -32,14 +24,19 @@ const CreateNewPage = () => {
     },
   });
   const mutation = useMutation({
-    mutationFn: async (data: SignUpRequest) => await signup(data),
+    mutationFn: async (data: SignInRequest) => await signin(data),
     onSuccess: (data) => {
+      console.log("😻 ~ file: page.tsx:29 ~ SignInPage ~ data:", data);
       setToken("accessToken", data.accessToken);
       setToken("refreshToken", data.refreshToken);
-      router.push("/get-started");
+      // router.push("/get-started");
     },
     onError: (error) => {
       signupForm.setFieldError("email", (error as any).response.data.message);
+      signupForm.setFieldError(
+        "password",
+        (error as any).response.data.message
+      );
     },
   });
   return (
@@ -47,7 +44,7 @@ const CreateNewPage = () => {
       {/* Heading */}
       <Flex direction="column" gap="md" align="center">
         <Title order={1} size={48}>
-          First, enter your email
+          Sign in to Slack
         </Title>
         <Text size="xl" fw={100} c="#454245" mb={32}>
           We suggest using the{" "}
@@ -61,6 +58,24 @@ const CreateNewPage = () => {
         onSubmit={signupForm.onSubmit((data) => mutation.mutateAsync(data))}
         className="max-w-md w-full flex flex-col gap-4"
       >
+        <Button
+          size="md"
+          leftSection={<GoogleIcon className="w-4 h-4" />}
+          variant="default"
+          fw={400}
+        >
+          Sign In With Google
+        </Button>
+        <Button
+          size="md"
+          leftSection={<AppleIcon className="w-4 h-4" />}
+          variant="default"
+          fw={400}
+        >
+          Sign In With Apple
+        </Button>
+        <Divider my="xs" label="OR" labelPosition="center" />
+
         <TextInput
           type="email"
           size="md"
@@ -74,38 +89,20 @@ const CreateNewPage = () => {
           {...signupForm.getInputProps("password")}
         />
         <Button type="submit" size="md" fullWidth color="aubergine">
-          Continue
-        </Button>
-        <Divider my="xs" label="OR" labelPosition="center" />
-
-        <Button
-          size="md"
-          leftSection={<GoogleIcon className="w-4 h-4" />}
-          variant="default"
-          fw={400}
-        >
-          Continue With Google
-        </Button>
-        <Button
-          size="md"
-          leftSection={<AppleIcon className="w-4 h-4" />}
-          variant="default"
-          fw={400}
-        >
-          Continue With Apple
+          Sign In With Email
         </Button>
       </form>
       {/* Existing  */}
       <Flex direction="column" gap={2} align="center" mt={32}>
         <Text size="md" fw={100}>
-          Already using Slack?
+          New to Slack?
         </Text>
         <Link href="/sign-in" className="text-blue-600 hover:underline">
-          Sign in to an existing workspace
+          Create an account
         </Link>
       </Flex>
     </div>
   );
 };
 
-export default CreateNewPage;
+export default SignInPage;

@@ -20,7 +20,12 @@
     ],
     "baseUrl": ".",
     "paths": {
-      "@images/*": ["public/images/*"]
+      "@images/*": ["public/images/*"],
+      "@components/*": ["components/*"],
+      "@fonts/*": ["config/fonts/*"],
+      "@fonts": ["config/fonts/index.ts"],
+      "@utils/*": ["utils/*"],
+      "@utils": ["utils/index.ts"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],

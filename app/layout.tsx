@@ -3,14 +3,14 @@
 import "@mantine/core/styles.css";
 import "./globals.css";
 
-import { MantineProvider, ColorSchemeScript } from "@mantine/core";
-import { theme } from "config/mantine";
+import { ColorSchemeScript } from "@mantine/core";
+import { larsseit } from "@fonts";
+import Providers from "@utils/provider";
 
 export const metadata = {
   title: "Slack",
   description: "I have followed setup instructions carefully",
 };
-
 export default function RootLayout({
   children,
 }: {
@@ -21,8 +21,8 @@ export default function RootLayout({
       <head>
         <ColorSchemeScript />
       </head>
-      <body>
-        <MantineProvider theme={theme}>{children}</MantineProvider>
+      <body className={larsseit.className}>
+        <Providers>{children}</Providers>
       </body>
     </html>
   );
