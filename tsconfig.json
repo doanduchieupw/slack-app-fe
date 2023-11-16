@@ -25,7 +25,8 @@
       "@fonts/*": ["config/fonts/*"],
       "@fonts": ["config/fonts/index.ts"],
       "@utils/*": ["utils/*"],
-      "@utils": ["utils/index.ts"]
+      "@utils": ["utils/index.ts"],
+      "@constant/*": ["constant/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],

@@ -1,6 +1,5 @@
-"use client";
 import SlackLogo from "@images/logo/slack-logo.svg";
-const SignInLayout = ({ children }: { children: React.ReactNode }) => {
+const CreateNewLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <div>
       <header className="center py-10">
@@ -11,4 +10,4 @@ const SignInLayout = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-export default SignInLayout;
+export default CreateNewLayout;

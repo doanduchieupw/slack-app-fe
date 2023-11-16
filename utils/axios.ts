@@ -1,6 +1,7 @@
 import axios from "axios";
 import { getToken, setToken } from "./cookies";
-import { refreshToken } from "api/auth";
+import { refreshTokenRequest } from "api/auth";
+import { TOKEN_KEY } from "@constant/auth";
 
 const baseURL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
@@ -21,9 +22,9 @@ axiosInstance.interceptors.response.use(
   async (error) => {
     const statusCode = error.response ? error.response.status : null;
     if (statusCode === 401) {
-      const token = await refreshToken();
-      setToken("accessToken", token.accessToken);
-      setToken("refreshToken", token.refreshToken);
+      const token = await refreshTokenRequest();
+      setToken(TOKEN_KEY.ACCESS, token.accessToken);
+      setToken(TOKEN_KEY.REFRESH, token.refreshToken);
       return error.config;
     }
     return Promise.reject(error);

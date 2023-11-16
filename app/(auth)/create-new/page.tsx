@@ -1,22 +1,23 @@
 "use client";
-import {
-  Button,
-  Divider,
-  Flex,
-  Input,
-  Text,
-  TextInput,
-  Title,
-} from "@mantine/core";
+import { Button, Divider, Flex, Text, TextInput, Title } from "@mantine/core";
+import { useMutation } from "@tanstack/react-query";
+import { useForm } from "@mantine/form";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+
 import GoogleIcon from "@images/logo/google-logo.svg";
 import AppleIcon from "@images/logo/apple-logo.svg";
-import { useMutation } from "@tanstack/react-query";
-import { signup } from "api/auth";
-import { useForm } from "@mantine/form";
-import { SignUpRequest } from "types/auth";
-import { useRouter } from "next/navigation";
+import { signupRequest } from "api/auth";
+import { SignUpBody } from "types/auth";
 import { setToken } from "@utils/cookies";
-import Link from "next/link";
+import {
+  EmailRegex,
+  EmailRegexError,
+  PasswordLength,
+  PasswordMessageError,
+} from "@constant/validate";
+import { TOKEN_KEY } from "@constant/auth";
+import { ROUTE } from "@constant/route";
 
 const CreateNewPage = () => {
   const router = useRouter();
@@ -26,17 +27,17 @@ const CreateNewPage = () => {
       password: "",
     },
     validate: {
-      email: (value) => (/^\S+@\S+$/.test(value) ? null : "Invalid email"),
+      email: (value) => (EmailRegex.test(value) ? null : EmailRegexError),
       password: (value) =>
-        value.length >= 6 ? null : "Password should be at least 6 characters",
+        value.length >= PasswordLength ? null : PasswordMessageError,
     },
   });
   const mutation = useMutation({
-    mutationFn: async (data: SignUpRequest) => await signup(data),
+    mutationFn: async (data: SignUpBody) => await signupRequest(data),
     onSuccess: (data) => {
-      setToken("accessToken", data.accessToken);
-      setToken("refreshToken", data.refreshToken);
-      router.push("/get-started");
+      setToken(TOKEN_KEY.ACCESS, data.accessToken);
+      setToken(TOKEN_KEY.REFRESH, data.refreshToken);
+      router.push(ROUTE.GET_STARTED);
     },
     onError: (error) => {
       signupForm.setFieldError("email", (error as any).response.data.message);
@@ -100,7 +101,7 @@ const CreateNewPage = () => {
         <Text size="md" fw={100}>
           Already using Slack?
         </Text>
-        <Link href="/sign-in" className="text-blue-600 hover:underline">
+        <Link href={ROUTE.SIGN_IN} className="text-blue-600 hover:underline">
           Sign in to an existing workspace
         </Link>
       </Flex>

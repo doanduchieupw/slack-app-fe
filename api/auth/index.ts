@@ -1,7 +1,7 @@
 import axiosInstance from "@utils/axios";
-import { AuthToken, SignInRequest, SignUpRequest } from "types/auth";
+import { AuthToken, SignInBody, SignUpBody } from "types/auth";
 
-export const signup = async (body: SignUpRequest) => {
+export const signupRequest = async (body: SignUpBody) => {
   const { data } = await axiosInstance.post<AuthToken>(
     "/api/auth/register",
     body
@@ -9,12 +9,12 @@ export const signup = async (body: SignUpRequest) => {
   return data;
 };
 
-export const signin = async (body: SignInRequest) => {
+export const signinRequest = async (body: SignInBody) => {
   const { data } = await axiosInstance.post<AuthToken>("/api/auth/login", body);
   return data;
 };
 
-export const refreshToken = async () => {
+export const refreshTokenRequest = async () => {
   const { data } = await axiosInstance.get<AuthToken>("/api/auth/refresh");
   return data;
 };

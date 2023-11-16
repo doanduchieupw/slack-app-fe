@@ -3,12 +3,14 @@ import { Button, Divider, Flex, Text, TextInput, Title } from "@mantine/core";
 import GoogleIcon from "@images/logo/google-logo.svg";
 import AppleIcon from "@images/logo/apple-logo.svg";
 import { useMutation } from "@tanstack/react-query";
-import { signin } from "api/auth";
+import { signinRequest } from "api/auth";
 import { useForm } from "@mantine/form";
-import { SignInRequest } from "types/auth";
+import { SignInBody } from "types/auth";
 import { useRouter } from "next/navigation";
 import { setToken } from "@utils/cookies";
 import Link from "next/link";
+import { TOKEN_KEY } from "@constant/auth";
+import { ROUTE } from "@constant/route";
 
 const SignInPage = () => {
   const router = useRouter();
@@ -24,11 +26,11 @@ const SignInPage = () => {
     },
   });
   const mutation = useMutation({
-    mutationFn: async (data: SignInRequest) => await signin(data),
+    mutationFn: async (data: SignInBody) => await signinRequest(data),
     onSuccess: (data) => {
-      setToken("accessToken", data.accessToken);
-      setToken("refreshToken", data.refreshToken);
-      router.push("/get-started");
+      setToken(TOKEN_KEY.ACCESS, data.accessToken);
+      setToken(TOKEN_KEY.REFRESH, data.refreshToken);
+      router.push(ROUTE.GET_STARTED);
     },
     onError: (error) => {
       signupForm.setFieldError("email", (error as any).response.data.message);
@@ -96,7 +98,7 @@ const SignInPage = () => {
         <Text size="md" fw={100}>
           New to Slack?
         </Text>
-        <Link href="/sign-in" className="text-blue-600 hover:underline">
+        <Link href={ROUTE.SIGN_UP} className="text-blue-600 hover:underline">
           Create an account
         </Link>
       </Flex>
