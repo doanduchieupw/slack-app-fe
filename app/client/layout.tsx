@@ -12,13 +12,7 @@ const ClientLayout = ({ children }: { children: React.ReactNode }) => {
       </Flex>
       <Flex style={{ height: `calc(100% - ${TOP_NAV_HEIGHT}px)` }}>
         <div style={{ width: `${TAB_RAIL_WIDTH}px` }}>Menu</div>
-        <div className=" w-full h-full pb-1 pr-1">
-          <Flex className="w-full h-full border rounded-md">
-            <div>NavBar</div>
-            <div>Main</div>
-            <div>Aside</div>
-          </Flex>
-        </div>
+        <div className=" w-full h-full pb-1 pr-1">{children}</div>
       </Flex>
     </div>
   );
