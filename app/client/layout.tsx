@@ -1,41 +1,26 @@
 "use client";
-import { useDisclosure } from "@mantine/hooks";
-import { AppShell, Burger, Group, Skeleton } from "@mantine/core";
-import SearchBar from "@components/client/header/search";
+import { Flex } from "@mantine/core";
+import TopNav from "@components/client/header/top-nav";
+import { TAB_RAIL_WIDTH, TOP_NAV_HEIGHT } from "./constant";
 
 const ClientLayout = ({ children }: { children: React.ReactNode }) => {
-  const [opened, { toggle }] = useDisclosure();
-
   return (
-    <AppShell
-      header={{ height: 44 }}
-      footer={{ height: 60 }}
-      navbar={{ width: 300, breakpoint: "sm", collapsed: { mobile: !opened } }}
-      aside={{
-        width: 300,
-        breakpoint: "md",
-        collapsed: { desktop: false, mobile: true },
-      }}
-      padding="md"
-    >
-      <AppShell.Header>
-        <Group h="100%" px="md">
-          <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
-          <SearchBar />
-        </Group>
-      </AppShell.Header>
-      <AppShell.Navbar p="md">
-        Navbar
-        {Array(15)
-          .fill(0)
-          .map((_, index) => (
-            <Skeleton key={index} h={28} mt="sm" animate={false} />
-          ))}
-      </AppShell.Navbar>
-      <AppShell.Main>{children}</AppShell.Main>
-      <AppShell.Aside p="md">Aside</AppShell.Aside>
-      <AppShell.Footer p="md">Footer</AppShell.Footer>
-    </AppShell>
+    <div className="w-screen h-screen">
+      <Flex style={{ height: `${TOP_NAV_HEIGHT}px` }}>
+        <div style={{ width: `${TAB_RAIL_WIDTH}px` }}></div>
+        <TopNav />
+      </Flex>
+      <Flex style={{ height: `calc(100% - ${TOP_NAV_HEIGHT}px)` }}>
+        <div style={{ width: `${TAB_RAIL_WIDTH}px` }}>Menu</div>
+        <div className=" w-full h-full pb-1 pr-1">
+          <Flex className="w-full h-full border rounded-md">
+            <div>NavBar</div>
+            <div>Main</div>
+            <div>Aside</div>
+          </Flex>
+        </div>
+      </Flex>
+    </div>
   );
 };
 

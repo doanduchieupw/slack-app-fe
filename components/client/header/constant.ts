@@ -1,0 +1,3 @@
+export const TOP_NAV_HISTORY_WIDTH = 264;
+export const TOP_NAV_SEARCH_MAX_WIDTH = 1000;
+export const TOP_NAV_SEARCH_MIN_WIDTH = 280;
